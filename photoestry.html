@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <style>
+.photo-modal {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 80vw;
+    max-height: 80vh;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    background: #fff;
+}
+
+.photo-modal::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.photo-modal img {
+    width: 100%;
+    height: auto;
+    max-height: 65vh;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+}
+
+</style>
+
+<script>
+
+const modal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
+const modalCaption = document.getElementById('modalCaption');
+const closeBtn = document.getElementById('closeModal');
+const triggers = document.querySelectorAll('.photo-trigger');
+
+triggers.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link behavior
+        const imgSrc = trigger.getAttribute('data-img');
+        const imgTitle = trigger.getAttribute('data-title');
+
+        modalImage.src = imgSrc;
+        modalCaption.textContent = imgTitle;
+        modal.showModal(); // Opens the native dialog
+    });
+});
+
+// Close modal when clicking the 'X' button
+closeBtn.addEventListener('click', () => {
+    modal.close();
+});
+
+// Close modal when clicking outside the image content
+modal.addEventListener('click', (e) => {
+    const dialogDimensions = modal.getBoundingClientRect();
+    if (
+        e.clientX < dialogDimensions.left ||
+        e.clientX > dialogDimensions.right ||
+        e.clientY < dialogDimensions.top ||
+        e.clientY > dialogDimensions.bottom
+    ) {
+        modal.close();
+    }
+});
+</script>
+</head>
+
+<html>
+
+<div class="photo-gallery-grid">
+    <a href="#" class="photo-trigger" data-img="Photees/Training 1.jpg" data-title="Collaborative group coding session">
+        <div class="photo-thumb">
+            <img src="Photees/Training 1.jpg" alt="Tech 1">
+        </div>
+    </a>
+</div>
+
+<!-- Modal Dialog for Enlarged View -->
+<dialog id="imageModal" class="photo-modal">
+    <button id="closeModal" class="close-btn">&times;</button>
+    <img id="modalImage" src="" alt="Enlarged view">
+    <p id="modalCaption"></p>
+</dialog>
+
+
+
+</html>
